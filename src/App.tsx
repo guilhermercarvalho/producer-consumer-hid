@@ -2,7 +2,8 @@ import React, { useReducer, useEffect, useRef } from "react";
 import { Activity, Package, Box, AlertCircle } from "lucide-react";
 
 // Constante para o tamanho máximo do buffer
-const BUFFER_SIZE = 50;
+const BUFFER_SIZE = 10;
+
 
 interface State {
   buffer: string[];
@@ -93,23 +94,35 @@ function App() {
               <h2 className="text-xl font-semibold">Buffer Queue</h2>
             </div>
 
-            <div className={`rounded-lg p-4 mb-4 transition-colors duration-300 ${bufferColorClass}`}>
-              <div className="grid grid-cols-5 gap-2">
-                {[...Array(BUFFER_SIZE)].map((_, index) => (
-                  <div
-                    key={index}
-                    className={`aspect-square rounded-lg flex items-center justify-center text-sm
-                      ${state.buffer[index] ? 'bg-white shadow-sm' : 'bg-gray-100 border-2 border-dashed border-gray-300'}`}
-                  >
-                    {state.buffer[index] ? <Box className="h-5 w-5 text-blue-600" /> : null}
-                  </div>
-                ))}
+            {/* Barra de Progresso */}
+            <div className="mb-4">
+              <div className="w-full bg-gray-200 rounded-full h-4">
+                <div
+                  className={`h-4 rounded-full ${bufferColorClass}`}
+                  style={{ width: `${bufferPercentage}%` }}
+                ></div>
+              </div>
+              <div className="flex justify-between items-center text-sm text-gray-600 mt-2">
+                <span>Buffer Capacity:</span>
+                <span className="font-medium">{state.buffer.length} / {BUFFER_SIZE}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-sm text-gray-600">
-              <span>Buffer Capacity:</span>
-              <span className="font-medium">{state.buffer.length} / {BUFFER_SIZE}</span>
+            {/* Lista Rolável de Itens no Buffer */}
+            <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-2">
+              {state.buffer.length === 0 ? (
+                <p className="text-gray-500 text-center">Buffer is empty</p>
+              ) : (
+                state.buffer.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded-lg"
+                  >
+                    <Box className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm">{item}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
