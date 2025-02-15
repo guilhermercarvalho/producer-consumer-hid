@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useRef } from "react";
 import { Activity, Package, Box, AlertCircle } from "lucide-react";
 
 // Constante para o tamanho máximo do buffer
-const BUFFER_SIZE = 50;
+const BUFFER_SIZE = 15;
 
 interface State {
   buffer: string[];
